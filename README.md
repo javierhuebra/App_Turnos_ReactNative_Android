@@ -15,6 +15,7 @@
 ## If you want to try the app, although it is quite reduced in functionality since the purpose was to be able to place my creation in the playstore, you can use the following link:
 <br>
 <a href="https://play.google.com/store/apps/details?id=com.citas.nuevocoso">Link to play store</a>
+<hr>
 <img src="./src/images/playstore.png">
 
 <hr>
