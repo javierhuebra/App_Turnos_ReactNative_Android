@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   StyleSheet,
@@ -22,6 +22,8 @@ import {
 import Formulario from './src/components/Formulario';
 import Paciente from './src/components/Paciente';
 import InformacionPaciente from './src/components/InformacionPaciente';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const App = () => {
 
   const [modalVisible, setModalVisible] = useState(false)
@@ -41,14 +43,42 @@ const App = () => {
       [
         {text:'Cancelar'},
         {text: 'Sí, eliminar', onPress: () =>{
-          const pacientesActualizados = pacientes.filter(
+
+            const pacientesActualizados = pacientes.filter(
             pacientesState => pacientesState.id !== id)
 
             setPacientes(pacientesActualizados)
+
+            guardarCitasStorage(JSON.stringify(pacientesActualizados))
         }}
       ]
     )
   }
+
+  //Almacenar las citas en storage
+  const guardarCitasStorage = async (citasJSON) => {
+    try{
+      await AsyncStorage.setItem('citas', citasJSON)
+    } catch (error){
+      console.log(error)
+    }
+  }
+
+  //useEffect para mostrar las cosas del async storage
+
+  useEffect(() => {
+    const obenerCitasStorage = async () => {
+      try{
+        const citasStorage = await AsyncStorage.getItem('citas')
+        if(citasStorage){
+          setPacientes(JSON.parse(citasStorage)) //En esta linea cargo el arreglo con lo que ya tengo guardado en storage
+        }
+      } catch(error){
+        console.log(error)
+      }
+    }
+    obenerCitasStorage()
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -57,7 +87,7 @@ const App = () => {
           <Image
             style={styles.imagenLogo}
             source={require('./src/images/logo_huebrajavier.png')} />
-          <Text style={styles.textoHeader}>v 1.1</Text>
+          <Text style={styles.textoHeader}>1.2 W-ST</Text>
         </View>
         <Text style={styles.titulo}>
           Administrador de turnos {''}
@@ -104,6 +134,7 @@ const App = () => {
         setPacientes={setPacientes}
         paciente={paciente}
         setPaciente={setPaciente}
+        guardarCitasStorage={guardarCitasStorage}
       />
 
       <Modal
@@ -117,10 +148,7 @@ const App = () => {
             />
       </Modal>
 
-      <View style={styles.header}>
-        <Text style={styles.textoHeader}>+54 291 555555</Text>
-        <Text style={styles.textoHeader}>javieremanuelhuebra@gmail.com</Text>
-      </View>
+      
     </View>
   );
 }

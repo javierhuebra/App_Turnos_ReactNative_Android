@@ -95,7 +95,7 @@ android {
 
     namespace "com.citas"
     defaultConfig {
-        applicationId "com.citas.nuevocoso"
+        applicationId "com.citas"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

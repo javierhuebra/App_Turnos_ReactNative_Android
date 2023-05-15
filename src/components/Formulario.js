@@ -8,7 +8,14 @@ import {
 import DatePicker from 'react-native-date-picker'
 
 function Formulario({
-    modalVisible, setModalVisible, pacientes, setPacientes, paciente: pacienteObj, setPaciente: setPacienteApp }) {
+    modalVisible, 
+    setModalVisible, 
+    pacientes, 
+    setPacientes, 
+    paciente: pacienteObj, 
+    setPaciente: setPacienteApp,
+    guardarCitasStorage
+}) {
     const [paciente, setPaciente] = useState('')
     const [id, setId] = useState('')
     const [propietario, setPropietario] = useState('')
@@ -39,15 +46,7 @@ function Formulario({
             Alert.alert(
                 'Error',
                 'Todos los campos son obligatorios.',
-                [{ text: 'Ok' }, { text: 'Me chupa un huevo', onPress: () => {
-                    Alert.alert(
-                        'A mi también!',
-                        'Dale, hacé lo que te digo o no va a andar.',
-                        [
-                            {text: 'Bueno'}
-                        ]
-                    )
-                } }]
+                [{ text: 'Ok' }]
             )
 
             return
@@ -76,8 +75,13 @@ function Formulario({
         } else {
             //nuevo registro
             nuevoPaciente.id = Date.now()
-            setPacientes([...pacientes, nuevoPaciente])
+
+            const variable = [...pacientes, nuevoPaciente]
+            setPacientes(variable)
+
+            guardarCitasStorage(JSON.stringify(variable))
         }
+
 
         setModalVisible(false)
         setId('')
